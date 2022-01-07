@@ -19,11 +19,11 @@ class _BtmSheetState extends State<BtmSheet> {
   XFile? picture = null;
   String description = '';
   String status = 'Open';
-  late BlocForIssues bloc;
+
 
   @override
   Widget build(BuildContext context) {
-    bloc = BlocProvider.of(context);
+  var  bloc = BlocProvider.of<BlocForIssues>(context);
     return BlocConsumer<BlocForIssues, List<Issue>>(
       listener: (context, state) {},
       builder: (context, state) => SizedBox.expand(

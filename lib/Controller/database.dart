@@ -3,23 +3,22 @@ import 'package:sqflite/sqflite.dart';
 class Dbcontroller {
   late Database database;
 
-  createDataBase() async {
-    String databasesPath = await getDatabasesPath();
-    databasesPath = databasesPath + '/mydatabase.db';
-    database = await openDatabase(databasesPath, version: 1,
-        onCreate: (Database db, int version) async {
-      await db.execute(
-          'CREATE TABLE TestData (id INTEGER PRIMARY KEY autoincrement, picture TEXT, title TEXT, description TEXT, date TEXT , status TEXT)');
-    });
-  }
-
-  insertIntoDataBase(
-      String path, String title, String description, String status) async {
+  Future<void> insertIntoDataBase(String path, String title, String description,
+      String date, String status) async {
     await database.insert('TestData', {
+      'date': date,
       'picture': path,
       'title': title,
       'description': description,
       'status': status
     });
+  }
+
+  Future<void> removeFromDataBase(int id) async {
+    await database.delete('TestData', where: 'id = $id');
+  }
+
+  Future<List<Map<String, Object?>>> getdata() async {
+    return await database.query('TestData');
   }
 }

@@ -11,23 +11,21 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  late BlocForIssues bloc;
   @override
   void initState() {
+    
     super.initState();
-    // var db = Dbcontroller();
-    // db.createDataBase();
   }
 
   @override
   Widget build(BuildContext context) {
-    bloc = BlocProvider.of(context);
+    var bloc = BlocProvider.of<BlocForIssues>(context);
     return Scaffold(
         appBar: AppBar(title: const Center(child: Text('Products Issues'))),
         body: SafeArea(
           child: BlocConsumer<BlocForIssues, List<Issue>>(
-              listener: (context, issues) {},
-              builder: (context, issues) {
+              listener: (context, state) {},
+              builder: (context, state) {
                 return ListView(
                     children: bloc.issues.map((issue) {
                   return IssueCard(issue);
