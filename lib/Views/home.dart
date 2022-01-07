@@ -11,7 +11,7 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  BlocForIssues provider = BlocForIssues();
+  late BlocForIssues bloc;
   @override
   void initState() {
     super.initState();
@@ -21,6 +21,7 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
+    bloc = BlocProvider.of(context);
     return Scaffold(
         appBar: AppBar(title: const Center(child: Text('Products Issues'))),
         body: SafeArea(
@@ -28,9 +29,8 @@ class _HomePageState extends State<HomePage> {
               listener: (context, issues) {},
               builder: (context, issues) {
                 return ListView(
-                    children: provider.issues.map((issue) {
-                  return IssueCard(issue
-                    );
+                    children: bloc.issues.map((issue) {
+                  return IssueCard(issue);
                 }).toList());
               }),
         ),
@@ -39,15 +39,9 @@ class _HomePageState extends State<HomePage> {
           shape:
               RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
           onPressed: () {
-            print(provider.issues.length);
+            print(bloc.issues.length);
             showModalBottomSheet(
-                context: context,
-                builder: (context) => BtmSheet()).then((issue) {
-              if (issue is! Null) {
-                provider.addNewIssue(issue);
-              }
-            });
-            setState(() {});
+                context: context, builder: (context) => BtmSheet());
           },
         ));
   }

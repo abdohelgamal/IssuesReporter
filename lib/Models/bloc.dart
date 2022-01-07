@@ -8,7 +8,13 @@ class BlocForIssues extends Cubit<List<Issue>> {
 
   void addNewIssue(Issue issue) {
     issues.add(issue);
-    print(issue);
+    print(issues.length);
+    emit(issues);
+  }
+
+  void removeIssue(Issue issue) {
+    issues.remove(issue);
+    print(issues.length);
     emit(issues);
   }
 }
