@@ -110,7 +110,7 @@ class _IssuePageState extends State<IssuePage> {
                       },
                     )
                   ]),
-        body: SingleChildScrollView(physics: NeverScrollableScrollPhysics(),
+        body: SingleChildScrollView(physics: const NeverScrollableScrollPhysics(),
           child: Container(
             margin: const EdgeInsets.symmetric(horizontal: 20, vertical: 25),
             child: editingMode == false
@@ -145,14 +145,14 @@ class _IssuePageState extends State<IssuePage> {
                     children: [
                       TextField(
                         decoration:
-                            InputDecoration(helperText: 'Enter new title'),
+                            const InputDecoration(helperText: 'Enter new title'),
                         onChanged: (newval) {
                           newTitle = newval;
                         },
                       ),
                       TextField(
                         decoration:
-                            InputDecoration(helperText: 'Enter new desvription'),
+                            const InputDecoration(helperText: 'Enter new description'),
                         onChanged: (newval) {
                           newDescription = newval;
                         },
