@@ -41,8 +41,8 @@ class _IssuePageState extends State<IssuePage> {
   @override
   void initState() {
     newStatus = widget.status;
-    newDescription = widget.description;
-    newTitle = widget.title;
+    newDescription = '';
+    newTitle = '';
     newPicture = null;
     super.initState();
   }
