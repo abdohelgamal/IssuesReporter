@@ -110,125 +110,127 @@ class _IssuePageState extends State<IssuePage> {
                       },
                     )
                   ]),
-        body: Container(
-          margin: const EdgeInsets.symmetric(horizontal: 20, vertical: 25),
-          child: editingMode == false
-              ? Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text('Issue Id : ${widget.id}', style: txtStyle),
-                          Text('Issue Title : ${widget.title}',
-                              style: txtStyle),
-                          Text('Issue Description : ${widget.description}',
-                              style: txtStyle),
-                          Text('Issue Status : ${widget.status}',
-                              style: txtStyle),
-                          Text('Issue Date : ${widget.date}', style: txtStyle),
-                        ]),
-                    Padding(
-                      padding: const EdgeInsets.all(15.0),
-                      child: Center(
-                        child: Image.file(
-                          File(widget.picture.path),
-                          width: MediaQuery.of(context).size.width * 0.75,
-                          height: MediaQuery.of(context).size.height * 0.6,
+        body: SingleChildScrollView(physics: NeverScrollableScrollPhysics(),
+          child: Container(
+            margin: const EdgeInsets.symmetric(horizontal: 20, vertical: 25),
+            child: editingMode == false
+                ? Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text('Issue Id : ${widget.id}', style: txtStyle),
+                            Text('Issue Title : ${widget.title}',
+                                style: txtStyle),
+                            Text('Issue Description : ${widget.description}',
+                                style: txtStyle),
+                            Text('Issue Status : ${widget.status}',
+                                style: txtStyle),
+                            Text('Issue Date : ${widget.date}', style: txtStyle),
+                          ]),
+                      Padding(
+                        padding: const EdgeInsets.all(15.0),
+                        child: Center(
+                          child: Image.file(
+                            File(widget.picture.path),
+                            width: MediaQuery.of(context).size.width * 0.75,
+                            height: MediaQuery.of(context).size.height * 0.6,
+                          ),
+                        ),
+                      )
+                    ],
+                  )
+                : Column(
+                    children: [
+                      TextField(
+                        decoration:
+                            InputDecoration(helperText: 'Enter new title'),
+                        onChanged: (newval) {
+                          newTitle = newval;
+                        },
+                      ),
+                      TextField(
+                        decoration:
+                            InputDecoration(helperText: 'Enter new desvription'),
+                        onChanged: (newval) {
+                          newDescription = newval;
+                        },
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                          children: [
+                            const Text('Status :'),
+                            SizedBox(
+                              height: 50,
+                              width: 120,
+                              child: DropdownButton(
+                                value: newStatus,
+                                alignment: Alignment.center,
+                                iconSize: 35,
+                                iconEnabledColor: Colors.blueAccent,
+                                items: const [
+                                  DropdownMenuItem(
+                                    child: Text('Closed'),
+                                    value: 'Closed',
+                                  ),
+                                  DropdownMenuItem(
+                                    child: Text('Open'),
+                                    value: 'Open',
+                                  )
+                                ],
+                                onChanged: (String? value) {
+                                  setState(() {
+                                    newStatus = value!;
+                                  });
+                                },
+                              ),
+                            ),
+                          ],
                         ),
                       ),
-                    )
-                  ],
-                )
-              : Column(
-                  children: [
-                    TextField(
-                      decoration:
-                          InputDecoration(helperText: 'Enter new title'),
-                      onChanged: (newval) {
-                        newTitle = newval;
-                      },
-                    ),
-                    TextField(
-                      decoration:
-                          InputDecoration(helperText: 'Enter new desvription'),
-                      onChanged: (newval) {
-                        newDescription = newval;
-                      },
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                        children: [
-                          const Text('Status :'),
-                          SizedBox(
-                            height: 50,
-                            width: 120,
-                            child: DropdownButton(
-                              value: newStatus,
-                              alignment: Alignment.center,
-                              iconSize: 35,
-                              iconEnabledColor: Colors.blueAccent,
-                              items: const [
-                                DropdownMenuItem(
-                                  child: Text('Closed'),
-                                  value: 'Closed',
-                                ),
-                                DropdownMenuItem(
-                                  child: Text('Open'),
-                                  value: 'Open',
-                                )
-                              ],
-                              onChanged: (String? value) {
+                      if (newPicture == null)
+                        TextButton.icon(
+                            label: const Text('Add an image'),
+                            onPressed: () async {
+                              ImagePicker imagePicker = ImagePicker();
+                              final XFile? photo = await imagePicker.pickImage(
+                                  source: ImageSource.camera);
+                              if (photo is XFile) {
                                 setState(() {
-                                  newStatus = value!;
+                                  newPicture = photo;
                                 });
-                              },
+                              } else {
+                                return;
+                              }
+                            },
+                            icon: const Icon(Icons.add)),
+                      if (newPicture != null)
+                        Stack(
+                          children: [
+                            Image.file(
+                              File(newPicture!.path),
+                              height: MediaQuery.of(context).size.height * 0.4,
+                              width: MediaQuery.of(context).size.height * 0.4,
+                              fit: BoxFit.cover,
                             ),
-                          ),
-                        ],
-                      ),
-                    ),
-                    if (newPicture == null)
-                      TextButton.icon(
-                          label: const Text('Add an image'),
-                          onPressed: () async {
-                            ImagePicker imagePicker = ImagePicker();
-                            final XFile? photo = await imagePicker.pickImage(
-                                source: ImageSource.camera);
-                            if (photo is XFile) {
-                              setState(() {
-                                newPicture = photo;
-                              });
-                            } else {
-                              return;
-                            }
-                          },
-                          icon: const Icon(Icons.add)),
-                    if (newPicture != null)
-                      Stack(
-                        children: [
-                          Image.file(
-                            File(newPicture!.path),
-                            height: MediaQuery.of(context).size.height * 0.4,
-                            width: MediaQuery.of(context).size.height * 0.4,
-                            fit: BoxFit.cover,
-                          ),
-                          IconButton(
-                              onPressed: () {
-                                setState(() {
-                                  newPicture = null;
-                                });
-                              },
-                              color: Colors.white,
-                              iconSize: 35,
-                              icon: const Icon(Icons.cancel_rounded))
-                        ],
-                        alignment: Alignment.topRight,
-                      ),
-                  ],
-                ),
+                            IconButton(
+                                onPressed: () {
+                                  setState(() {
+                                    newPicture = null;
+                                  });
+                                },
+                                color: Colors.white,
+                                iconSize: 35,
+                                icon: const Icon(Icons.cancel_rounded))
+                          ],
+                          alignment: Alignment.topRight,
+                        ),
+                    ],
+                  ),
+          ),
         ),
       ),
     );
