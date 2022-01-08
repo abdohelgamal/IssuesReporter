@@ -6,35 +6,16 @@ import 'package:image_picker/image_picker.dart';
 class BlocForIssues extends Cubit<List<Issue>> {
   BlocForIssues() : super(List.empty()) {
     db = Dbcontroller();
-    db.createDataBase().whenComplete((){
-        updateIssuesList();
+    db.createDataBase().whenComplete(() {
+      updateIssuesList();
     });
-  
-    print('bloc create');
   }
 
   late Dbcontroller db;
   List<Issue> issues = [];
-//write a function to check if there is a table in the database or not
-
-  // createDataBase() async {
-  //   String databasesPath = await getDatabasesPath();
-  //   databasesPath = databasesPath + '/mydatabase.db';
-  //   await openDatabase(databasesPath, version: 1).then((database) {
-  //     db.database = database;
-  //     print('database created');
-  //     if (db.database == null) {
-  //       db.database.transaction((txn) async {
-  //         return await txn.execute(
-  //             '''CREATE TABLE TestData (id integer primary key autoincrement, picture text, title text, description text, date text , status text)''');
-  //       });
-  //     }
-  //   });
-  // }
 
   void updateIssuesList() async {
-    List<Map> temp = await db.getdata();
-    print(temp);
+    List<Map> temp = await db.getData();
     issues = temp
         .map((val) => Issue(val['id'], val['title'], XFile(val['picture']),
             val['description'], val['date'], val['status']))
@@ -47,7 +28,10 @@ class BlocForIssues extends Cubit<List<Issue>> {
         issue.description, issue.date, issue.status);
     updateIssuesList();
   }
-
+void editIssue(Issue issue)async{
+  await db.editIssueRecord(issue);
+  updateIssuesList();
+}
   void removeIssue(Issue issue) async {
     await db.removeFromDataBase(issue.id);
     updateIssuesList();

@@ -1,7 +1,7 @@
 import 'package:facegraph_assessment/Models/bloc.dart';
 import 'package:facegraph_assessment/Models/issue_class.dart';
-import 'package:facegraph_assessment/Views/bottomSheet.dart';
-import 'package:facegraph_assessment/Views/issueCard_Component.dart';
+import 'package:facegraph_assessment/Views/add_issue_page.dart';
+import 'package:facegraph_assessment/Views/issue_card_component.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -13,7 +13,6 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   @override
   void initState() {
-    
     super.initState();
   }
 
@@ -28,7 +27,7 @@ class _HomePageState extends State<HomePage> {
               builder: (context, state) {
                 return ListView(
                     children: bloc.issues.map((issue) {
-                  return IssueCard(issue);
+                  return  IssueCard(issue);
                 }).toList());
               }),
         ),
@@ -37,9 +36,8 @@ class _HomePageState extends State<HomePage> {
           shape:
               RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
           onPressed: () {
-            print(bloc.issues.length);
-            showModalBottomSheet(
-                context: context, builder: (context) => BtmSheet());
+            Navigator.push(
+                context, MaterialPageRoute(builder: (context) => const AddIssuePage()));
           },
         ));
   }
