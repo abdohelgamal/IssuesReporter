@@ -3,6 +3,7 @@ import 'package:date_format/date_format.dart';
 import 'package:facegraph_assessment/Controller/functions.dart';
 import 'package:facegraph_assessment/Models/bloc.dart';
 import 'package:facegraph_assessment/Models/issue_class.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:image_picker/image_picker.dart';
@@ -87,40 +88,28 @@ class _IssuePageState extends State<IssuePage> {
                               formatDate(
                                   DateTime.now(), [yyyy, '-', mm, '-', dd]),
                               newStatus));
-                              Navigator.pop(context);
-                              
+                          Navigator.pop(context);
+                        } else {
+                          showCupertinoDialog(
+                              context: context,
+                              builder: (context) => CupertinoAlertDialog(
+                                      content: const Text(
+                                        'Please enter all missing data and a picture',
+                                        style: TextStyle(
+                                            fontSize: 15,
+                                            fontWeight: FontWeight.w600),
+                                      ),
+                                      actions: [
+                                        TextButton(
+                                            onPressed: () {
+                                              Navigator.pop(context);
+                                            },
+                                            child: const Text('Ok'))
+                                      ]));
                         }
                       },
                     )
-                  ]
-            // [
-            //           IconButton(
-            //               color: Colors.white,
-            //               onPressed: () {
-            //                 if (newTitle != '' && newPicture != null && newDescription != '') {
-
-            //           Navigator.pop(context);
-            //         } else {
-            //           showCupertinoDialog(
-            //               context: context,
-            //               builder: (context) => CupertinoAlertDialog(
-            //                       content: const Text(
-            //                         'Please enter all missing data and a picture',
-            //                         style: TextStyle(
-            //                             fontSize: 15, fontWeight: FontWeight.w600),
-            //                       ),
-            //                       actions: [
-            //                         TextButton(
-            //                             onPressed: () {
-            //                               Navigator.pop(context);
-            //                             },
-            //                             child: const Text('Ok'))
-            //                       ]));
-            //                 }
-            //               },
-            //               )
-            //         ]: null
-            ),
+                  ]),
         body: Container(
           margin: const EdgeInsets.symmetric(horizontal: 20, vertical: 25),
           child: editingMode == false
