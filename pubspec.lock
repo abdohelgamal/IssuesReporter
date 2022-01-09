@@ -57,13 +57,6 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "0.3.2"
-  cupertino_icons:
-    dependency: "direct main"
-    description:
-      name: cupertino_icons
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "1.0.4"
   date_format:
     dependency: "direct main"
     description:
@@ -121,13 +114,6 @@ packages:
     description: flutter
     source: sdk
     version: "0.0.0"
-  horizontal_data_table:
-    dependency: "direct main"
-    description:
-      name: horizontal_data_table
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "3.6.0"
   http:
     dependency: transitive
     description:

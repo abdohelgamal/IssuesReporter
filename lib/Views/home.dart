@@ -16,18 +16,26 @@ class HomePage extends StatelessWidget {
             child: BlocConsumer<BlocForIssues, List<Issue>>(
                 listener: (context, state) {},
                 builder: (context, state) {
-                  return ListView.builder(
-                    itemBuilder: (context, index) {
-                      return AnimationConfiguration.staggeredList(
-                          position: index,
-                          duration: const Duration(milliseconds: 600),
-                          child: SlideAnimation(
-                              horizontalOffset: 50.0,
-                              child: FadeInAnimation(
-                                  child: IssueCard(bloc.issues[index]))));
-                    },
-                    itemCount: bloc.issues.length,
-                  );
+                  return bloc.issues.isEmpty
+                      ? const Center(
+                          child: Text(
+                            'No issue has been added yet',
+                            textAlign: TextAlign.center,
+                            style: TextStyle(fontSize: 20),
+                          ),
+                        )
+                      : ListView.builder(
+                          itemBuilder: (context, index) {
+                            return AnimationConfiguration.staggeredList(
+                                position: index,
+                                duration: const Duration(milliseconds: 600),
+                                child: SlideAnimation(
+                                    horizontalOffset: 50.0,
+                                    child: FadeInAnimation(
+                                        child: IssueCard(bloc.issues[index]))));
+                          },
+                          itemCount: bloc.issues.length,
+                        );
                 })),
         floatingActionButton: FloatingActionButton.extended(
           label: const Center(child: Text('Add new Issue')),
