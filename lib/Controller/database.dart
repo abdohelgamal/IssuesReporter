@@ -3,7 +3,7 @@ import 'package:sqflite/sqflite.dart';
 
 class Dbcontroller {
   late Database database;
-
+  String tableName = 'TestData';
   createDataBase() async {
     String databasesPath = await getDatabasesPath();
     databasesPath = databasesPath + '/mydatabase.db';
@@ -11,14 +11,14 @@ class Dbcontroller {
       database = data;
       database.transaction((txn) async {
         return await txn.execute(
-            '''CREATE TABLE IF NOT EXISTS TestData (id integer primary key autoincrement, picture text, title text, description text, date text , status text)''');
+            '''CREATE TABLE IF NOT EXISTS $tableName (id integer primary key autoincrement, picture text, title text, description text, date text , status text)''');
       });
     });
   }
 
   Future<void> insertIntoDataBase(String path, String title, String description,
       String date, String status) async {
-    await database.insert('TestData', {
+    await database.insert(tableName, {
       'date': date,
       'picture': path,
       'title': title,
@@ -29,7 +29,7 @@ class Dbcontroller {
 
   Future<void> editIssueRecord(Issue issue) async {
     await database.update(
-        'TestData',
+        tableName,
         {
           'date': issue.date,
           'picture': issue.picture.path,
@@ -41,10 +41,10 @@ class Dbcontroller {
   }
 
   Future<void> removeFromDataBase(int id) async {
-    await database.delete('TestData', where: 'id = $id');
+    await database.delete(tableName, where: 'id = $id');
   }
 
   Future<List<Map<String, Object?>>> getData() async {
-    return await database.query('TestData');
+    return await database.query(tableName);
   }
 }

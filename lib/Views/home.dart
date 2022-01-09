@@ -4,40 +4,38 @@ import 'package:facegraph_assessment/Views/add_issue_page.dart';
 import 'package:facegraph_assessment/Views/issue_card_component.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 
-class HomePage extends StatefulWidget {
-  @override
-  State<HomePage> createState() => _HomePageState();
-}
-
-class _HomePageState extends State<HomePage> {
-  @override
-  void initState() {
-    super.initState();
-  }
-
+class HomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var bloc = BlocProvider.of<BlocForIssues>(context);
     return Scaffold(
         appBar: AppBar(title: const Center(child: Text('Products Issues'))),
         body: SafeArea(
-          child: BlocConsumer<BlocForIssues, List<Issue>>(
-              listener: (context, state) {},
-              builder: (context, state) {
-                return ListView(
-                    children: bloc.issues.map((issue) {
-                  return  IssueCard(issue);
-                }).toList());
-              }),
-        ),
+            child: BlocConsumer<BlocForIssues, List<Issue>>(
+                listener: (context, state) {},
+                builder: (context, state) {
+                  return ListView.builder(
+                    itemBuilder: (context, index) {
+                      return AnimationConfiguration.staggeredList(
+                          position: index,
+                          duration: const Duration(milliseconds: 600),
+                          child: SlideAnimation(
+                              horizontalOffset: 50.0,
+                              child: FadeInAnimation(
+                                  child: IssueCard(bloc.issues[index]))));
+                    },
+                    itemCount: bloc.issues.length,
+                  );
+                })),
         floatingActionButton: FloatingActionButton.extended(
           label: const Center(child: Text('Add new Issue')),
           shape:
               RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
           onPressed: () {
-            Navigator.push(
-                context, MaterialPageRoute(builder: (context) => const AddIssuePage()));
+            Navigator.push(context,
+                MaterialPageRoute(builder: (context) => const AddIssuePage()));
           },
         ));
   }

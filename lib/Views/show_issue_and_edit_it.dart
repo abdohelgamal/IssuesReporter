@@ -31,9 +31,9 @@ class IssuePage extends StatefulWidget {
 
 class _IssuePageState extends State<IssuePage> {
   bool editingMode = false;
-  late String newTitle;
   late XFile? newPicture;
-  late String newDescription;
+  late TextEditingController newTitle = TextEditingController();
+  late TextEditingController newDescription = TextEditingController();
   late String newStatus;
 
   TextStyle txtStyle =
@@ -41,9 +41,9 @@ class _IssuePageState extends State<IssuePage> {
   @override
   void initState() {
     newStatus = widget.status;
-    newDescription = '';
-    newTitle = '';
-    newPicture = null;
+    newDescription.text = widget.description;
+    newTitle.text = widget.title;
+    newPicture = widget.picture;
     super.initState();
   }
 
@@ -53,7 +53,6 @@ class _IssuePageState extends State<IssuePage> {
     return BlocConsumer<BlocForIssues, List<Issue>>(
       listener: (context, state) {},
       builder: (context, state) => Scaffold(
-        resizeToAvoidBottomInset: true,
         appBar: AppBar(
             title: Text(widget.title),
             actions: editingMode == false
@@ -79,14 +78,15 @@ class _IssuePageState extends State<IssuePage> {
                     IconButton(
                       icon: const Icon(Icons.check),
                       onPressed: () {
-                        if (validate(newTitle, newPicture, newDescription)) {
+                        if (validate(
+                            newTitle.text, newPicture, newDescription.text)) {
                           bloc.editIssue(Issue(
                               widget.id,
-                              newTitle,
+                              newTitle.text,
                               newPicture!,
-                              newDescription,
-                              formatDate(
-                                  DateTime.now(), [yyyy, '-', mm, '-', dd]),
+                              newDescription.text,
+                              formatDate(DateTime.now(),
+                                  [yyyy, '-', mm, '-', dd, '  ', hh, ':', nn]),
                               newStatus));
                           Navigator.pop(context);
                         } else {
@@ -110,7 +110,8 @@ class _IssuePageState extends State<IssuePage> {
                       },
                     )
                   ]),
-        body: SingleChildScrollView(physics: const NeverScrollableScrollPhysics(),
+        body: SingleChildScrollView(
+          physics: const NeverScrollableScrollPhysics(),
           child: Container(
             margin: const EdgeInsets.symmetric(horizontal: 20, vertical: 25),
             child: editingMode == false
@@ -127,7 +128,8 @@ class _IssuePageState extends State<IssuePage> {
                                 style: txtStyle),
                             Text('Issue Status : ${widget.status}',
                                 style: txtStyle),
-                            Text('Issue Date : ${widget.date}', style: txtStyle),
+                            Text('Issue Date : ${widget.date}',
+                                style: txtStyle),
                           ]),
                       Padding(
                         padding: const EdgeInsets.all(15.0),
@@ -144,53 +146,46 @@ class _IssuePageState extends State<IssuePage> {
                 : Column(
                     children: [
                       TextField(
-                        decoration:
-                            const InputDecoration(helperText: 'Enter new title'),
-                        onChanged: (newval) {
-                          newTitle = newval;
-                        },
+                        controller: newTitle,
+                        decoration: const InputDecoration(
+                            helperText: 'Enter new title'),
                       ),
                       TextField(
-                        decoration:
-                            const InputDecoration(helperText: 'Enter new description'),
-                        onChanged: (newval) {
-                          newDescription = newval;
-                        },
+                        controller: newDescription,
+                        decoration: const InputDecoration(
+                            helperText: 'Enter new description'),
                       ),
                       Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                          children: [
-                            const Text('Status :'),
-                            SizedBox(
-                              height: 50,
-                              width: 120,
-                              child: DropdownButton(
-                                value: newStatus,
-                                alignment: Alignment.center,
-                                iconSize: 35,
-                                iconEnabledColor: Colors.blueAccent,
-                                items: const [
-                                  DropdownMenuItem(
-                                    child: Text('Closed'),
-                                    value: 'Closed',
-                                  ),
-                                  DropdownMenuItem(
-                                    child: Text('Open'),
-                                    value: 'Open',
-                                  )
-                                ],
-                                onChanged: (String? value) {
-                                  setState(() {
-                                    newStatus = value!;
-                                  });
-                                },
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
+                          padding: const EdgeInsets.all(8.0),
+                          child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                              children: [
+                                const Text('Status :'),
+                                Row(
+                                  children: [
+                                    Radio(
+                                        value: 'Open',
+                                        groupValue: newStatus,
+                                        onChanged: (String? val) {
+                                          setState(() {
+                                            newStatus = val!;
+                                          });
+                                        }),
+                                    const Text('Open')
+                                  ],
+                                ),
+                                Row(children: [
+                                  Radio(
+                                      value: 'Closed',
+                                      groupValue: newStatus,
+                                      onChanged: (String? val) {
+                                        setState(() {
+                                          newStatus = val!;
+                                        });
+                                      }),
+                                  const Text('Closed')
+                                ])
+                              ])),
                       if (newPicture == null)
                         TextButton.icon(
                             label: const Text('Add an image'),

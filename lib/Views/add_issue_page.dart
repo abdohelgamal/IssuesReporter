@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'package:facegraph_assessment/Controller/functions.dart';
 import 'package:facegraph_assessment/Models/bloc.dart';
 import 'package:facegraph_assessment/Models/issue_class.dart';
 import 'package:flutter/cupertino.dart';
@@ -25,20 +26,18 @@ class _AddIssuePageState extends State<AddIssuePage> {
     var bloc = BlocProvider.of<BlocForIssues>(context);
     return BlocConsumer<BlocForIssues, List<Issue>>(
         listener: (context, state) {},
-        builder: (context, state) => Scaffold( resizeToAvoidBottomInset: true,
+        builder: (context, state) => Scaffold(
             floatingActionButton: FloatingActionButton(
-              child: const Icon(
-                Icons.add,
-                size: 30,
-              ),
+              child: const Icon(Icons.add, size: 30),
               onPressed: () {
-                if (title != '' && picture != null && description != '') {
+                if (validate(title, picture, description)) {
                   bloc.addNewIssue(Issue(
                       1,
                       title,
                       picture!,
                       description,
-                      formatDate(DateTime.now(), [yyyy, '-', mm, '-', dd]),
+                      formatDate(DateTime.now(),
+                          [yyyy, '-', mm, '-', dd, '  ', hh, ':', nn]),
                       status));
                   Navigator.pop(context);
                 } else {
@@ -67,107 +66,106 @@ class _AddIssuePageState extends State<AddIssuePage> {
               ),
             ),
             body: SafeArea(
-                child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                  Padding(
-                    padding: const EdgeInsets.all(15.0),
-                    child: TextField(
-                      onChanged: (value) {
-                        setState(() {
-                          title = value;
-                        });
-                      },
-                      maxLines: 1,
-                      decoration: const InputDecoration(
-                        hintText: 'Title :',
-                      ),
-                    ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.all(15.0),
-                    child: TextField(
-                      onChanged: (value) {
-                        description = value;
-                      },
-                      maxLines: 3,
-                      decoration: const InputDecoration(
-                        isCollapsed: true,
-                        hintText: 'Description :',
-                      ),
-                    ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      children: [
-                        const Text('Status :'),
-                        SizedBox(
-                          height: 50,
-                          width: 120,
-                          child: DropdownButton(
-                            value: status,
-                            alignment: Alignment.center,
-                            iconSize: 35,
-                            iconEnabledColor: Colors.blueAccent,
-                            items: const [
-                              DropdownMenuItem(
-                                child: Text('Closed'),
-                                value: 'Closed',
-                              ),
-                              DropdownMenuItem(
-                                child: Text('Open'),
-                                value: 'Open',
-                              )
-                            ],
-                            onChanged: (String? value) {
-                              setState(() {
-                                status = value!;
-                              });
-                            },
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                  if (picture == null)
-                    TextButton.icon(
-                        label: const Text('Add an image'),
-                        onPressed: () async {
-                          ImagePicker imagePicker = ImagePicker();
-                          final XFile? photo = await imagePicker.pickImage(
-                              source: ImageSource.camera);
-                          if (photo is XFile) {
-                            setState(() {
-                              picture = photo;
-                            });
-                          } else {
-                            return;
-                          }
+                child: SingleChildScrollView(
+              child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.all(15.0),
+                      child: TextField(
+                        onChanged: (value) {
+                          setState(() {
+                            title = value;
+                          });
                         },
-                        icon: const Icon(Icons.add)),
-                  if (picture != null)
-                    Stack(
-                      children: [
-                        Image.file(
-                          File(picture!.path),
-                          height: MediaQuery.of(context).size.height * 0.4,
-                          width: MediaQuery.of(context).size.height * 0.4,
-                          fit: BoxFit.cover,
+                        maxLines: 1,
+                        decoration: const InputDecoration(
+                          hintText: 'Title :',
                         ),
-                        IconButton(
-                            onPressed: () {
-                              setState(() {
-                                picture = null;
-                              });
-                            },
-                            color: Colors.white,
-                            iconSize: 35,
-                            icon: const Icon(Icons.cancel_rounded))
-                      ],
-                      alignment: Alignment.topRight,
+                      ),
                     ),
-                ]))));
+                    Padding(
+                      padding: const EdgeInsets.all(15.0),
+                      child: TextField(
+                        onChanged: (value) {
+                          description = value;
+                        },
+                        maxLines: 3,
+                        decoration: const InputDecoration(
+                          isCollapsed: true,
+                          hintText: 'Description :',
+                        ),
+                      ),
+                    ),
+                    Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                            children: [
+                              const Text('Status :'),
+                              Row(
+                                children: [
+                                  Radio(
+                                      value: 'Open',
+                                      groupValue: status,
+                                      onChanged: (String? val) {
+                                        setState(() {
+                                          status = val!;
+                                        });
+                                      }),
+                                  const Text('Open')
+                                ],
+                              ),
+                              Row(children: [
+                                Radio(
+                                    value: 'Closed',
+                                    groupValue: status,
+                                    onChanged: (String? val) {
+                                      setState(() {
+                                        status = val!;
+                                      });
+                                    }),
+                                const Text('Closed')
+                              ])
+                            ])),
+                    if (picture == null)
+                      TextButton.icon(
+                          label: const Text('Add an image'),
+                          onPressed: () async {
+                            ImagePicker imagePicker = ImagePicker();
+                            final XFile? photo = await imagePicker.pickImage(
+                                source: ImageSource.camera);
+                            if (photo is XFile) {
+                              setState(() {
+                                picture = photo;
+                              });
+                            } else {
+                              return;
+                            }
+                          },
+                          icon: const Icon(Icons.add)),
+                    if (picture != null)
+                      Stack(
+                        children: [
+                          Image.file(
+                            File(picture!.path),
+                            height: MediaQuery.of(context).size.height * 0.4,
+                            width: MediaQuery.of(context).size.height * 0.4,
+                            fit: BoxFit.cover,
+                          ),
+                          IconButton(
+                              onPressed: () {
+                                setState(() {
+                                  picture = null;
+                                });
+                              },
+                              color: Colors.white,
+                              iconSize: 35,
+                              icon: const Icon(Icons.cancel_rounded))
+                        ],
+                        alignment: Alignment.topRight,
+                      ),
+                  ]),
+            ))));
   }
 }

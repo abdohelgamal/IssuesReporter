@@ -53,12 +53,16 @@ class IssueCard extends StatelessWidget {
                                 fontSize: 25, fontWeight: FontWeight.w600)),
                         Text(
                           issue.title,
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
                           softWrap: true,
                           style: const TextStyle(
                               fontSize: 25, fontWeight: FontWeight.w600),
                         ),
                         Text(
                           'Created At : ${issue.date}',
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
                           style: const TextStyle(
                             fontSize: 15,
                           ),
@@ -72,7 +76,8 @@ class IssueCard extends StatelessWidget {
                         ),
                         Text(
                           'Description : ${issue.description}',
-                          overflow: TextOverflow.clip,
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
                           style: const TextStyle(
                             fontSize: 15,
                           ),
