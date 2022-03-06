@@ -1,4 +1,4 @@
-package com.example.facegraph_assessment
+package com.example.issues_reporter
 
 import io.flutter.embedding.android.FlutterActivity
 

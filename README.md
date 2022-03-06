@@ -1,4 +1,4 @@
-# facegraph_assessment
+# issues_reporter
 
 A new Flutter project.
 
