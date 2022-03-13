@@ -1,5 +1,6 @@
 import 'package:image_picker/image_picker.dart';
 
+///A model for Issues to use them as objects
 class Issue {
   final int id;
   final String title;

@@ -8,6 +8,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:image_picker/image_picker.dart';
 
+///This Page is for entering a new [Issue] and its details
 class AddIssuePage extends StatefulWidget {
   const AddIssuePage({Key? key}) : super(key: key);
 
@@ -28,6 +29,7 @@ class _AddIssuePageState extends State<AddIssuePage> {
         listener: (context, state) {},
         builder: (context, state) => Scaffold(
             floatingActionButton: FloatingActionButton(
+              backgroundColor: const Color.fromARGB(255, 245, 120, 82),
               child: const Icon(Icons.add, size: 30),
               onPressed: () {
                 if (validate(title, picture, description)) {
@@ -45,10 +47,10 @@ class _AddIssuePageState extends State<AddIssuePage> {
                       context: context,
                       builder: (context) => CupertinoAlertDialog(
                               content: const Text(
-                                'Please enter all missing data and a picture',
-                                style: TextStyle(
-                                    fontSize: 15, fontWeight: FontWeight.w600),
-                              ),
+                                  'Please enter all missing data and a picture',
+                                  style: TextStyle(
+                                      fontSize: 15,
+                                      fontWeight: FontWeight.w600)),
                               actions: [
                                 TextButton(
                                     onPressed: () {
@@ -60,112 +62,99 @@ class _AddIssuePageState extends State<AddIssuePage> {
               },
             ),
             appBar: AppBar(
-              title: const Text(
-                'Please enter issue details',
-                style: TextStyle(fontSize: 22, fontWeight: FontWeight.w600),
-              ),
-            ),
+                backgroundColor: const Color.fromARGB(255, 245, 120, 82),
+                title: const Text('Please enter issue details',
+                    style:
+                        TextStyle(fontSize: 22, fontWeight: FontWeight.w600))),
             body: SafeArea(
                 child: SingleChildScrollView(
-              child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    Padding(
-                      padding: const EdgeInsets.all(15.0),
-                      child: TextField(
-                        onChanged: (value) {
-                          setState(() {
-                            title = value;
-                          });
-                        },
-                        maxLines: 1,
-                        decoration: const InputDecoration(
-                          hintText: 'Title :',
-                        ),
-                      ),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.all(15.0),
-                      child: TextField(
-                        onChanged: (value) {
-                          description = value;
-                        },
-                        maxLines: 3,
-                        decoration: const InputDecoration(
-                          isCollapsed: true,
-                          hintText: 'Description :',
-                        ),
-                      ),
-                    ),
-                    Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                            children: [
-                              const Text('Status :'),
-                              Row(
-                                children: [
-                                  Radio(
-                                      value: 'Open',
-                                      groupValue: status,
-                                      onChanged: (String? val) {
-                                        setState(() {
-                                          status = val!;
-                                        });
-                                      }),
-                                  const Text('Open')
-                                ],
-                              ),
-                              Row(children: [
-                                Radio(
-                                    value: 'Closed',
-                                    groupValue: status,
-                                    onChanged: (String? val) {
-                                      setState(() {
-                                        status = val!;
-                                      });
-                                    }),
-                                const Text('Closed')
-                              ])
-                            ])),
-                    if (picture == null)
-                      TextButton.icon(
-                          label: const Text('Add an image'),
-                          onPressed: () async {
-                            ImagePicker imagePicker = ImagePicker();
-                            final XFile? photo = await imagePicker.pickImage(
-                                source: ImageSource.camera);
-                            if (photo is XFile) {
-                              setState(() {
-                                picture = photo;
-                              });
-                            } else {
-                              return;
-                            }
-                          },
-                          icon: const Icon(Icons.add)),
-                    if (picture != null)
-                      Stack(
+                    child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
-                          Image.file(
-                            File(picture!.path),
+                  Padding(
+                      padding: const EdgeInsets.all(15.0),
+                      child: TextField(
+                          onChanged: (value) {
+                            setState(() {
+                              title = value;
+                            });
+                          },
+                          maxLines: 1,
+                          decoration:
+                              const InputDecoration(hintText: 'Title :'))),
+                  Padding(
+                      padding: const EdgeInsets.all(15.0),
+                      child: TextField(
+                          onChanged: (value) {
+                            description = value;
+                          },
+                          maxLines: 3,
+                          decoration: const InputDecoration(
+                              isCollapsed: true, hintText: 'Description :'))),
+                  Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                          children: [
+                            const Text('Status :'),
+                            Row(children: [
+                              Radio(
+                                  value: 'Open',
+                                  groupValue: status,
+                                  onChanged: (String? val) {
+                                    setState(() {
+                                      status = val!;
+                                    });
+                                  }),
+                              const Text('Open')
+                            ]),
+                            Row(children: [
+                              Radio(
+                                  value: 'Closed',
+                                  groupValue: status,
+                                  onChanged: (String? val) {
+                                    setState(() {
+                                      status = val!;
+                                    });
+                                  }),
+                              const Text('Closed')
+                            ])
+                          ])),
+                  if (picture == null)
+                    TextButton.icon(
+                        label: const Text('Add an image'),
+                        onPressed: () async {
+                          ImagePicker imagePicker = ImagePicker();
+                          final XFile? photo = await imagePicker.pickImage(
+                              source: ImageSource.camera);
+                          if (photo is XFile) {
+                            setState(() {
+                              picture = photo;
+                            });
+                          } else {
+                            return;
+                          }
+                        },
+                        icon: const Icon(Icons.add)),
+                  if (picture != null)
+                    Stack(
+                      children: [
+                        Image.file(File(picture!.path),
                             height: MediaQuery.of(context).size.height * 0.4,
                             width: MediaQuery.of(context).size.height * 0.4,
-                            fit: BoxFit.cover,
-                          ),
-                          IconButton(
-                              onPressed: () {
-                                setState(() {
-                                  picture = null;
-                                });
-                              },
-                              color: Colors.white,
-                              iconSize: 35,
-                              icon: const Icon(Icons.cancel_rounded))
-                        ],
-                        alignment: Alignment.topRight,
-                      ),
-                  ]),
-            ))));
+                            fit: BoxFit.cover),
+                        IconButton(
+                            onPressed: () {
+                              setState(() {
+                                picture = null;
+                              });
+                            },
+                            color: Colors.white,
+                            iconSize: 35,
+                            icon: const Icon(Icons.cancel_rounded))
+                      ],
+                      alignment: Alignment.topRight,
+                    )
+                ])))));
   }
 }
