@@ -37,7 +37,7 @@ class IssueCard extends StatelessWidget {
                           ClipOval(
                               child: Image.file(
                                   File(
-                                    issue.picture.path,
+                                    issue.picturePath,
                                   ),
                                   width: 150,
                                   height: 150,

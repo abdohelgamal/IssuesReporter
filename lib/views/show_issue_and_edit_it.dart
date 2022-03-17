@@ -1,5 +1,6 @@
 import 'dart:io';
 import 'package:date_format/date_format.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:issues_reporter/controllers/bloc.dart';
 import 'package:issues_reporter/controllers/functions.dart';
 import 'package:issues_reporter/models/issue_class.dart';
@@ -14,9 +15,11 @@ class IssuePage extends StatefulWidget {
     date = issue.date;
     description = issue.description;
     title = issue.title;
-    picture = issue.picture;
+    picture = XFile(issue.picturePath);
     status = issue.status;
     id = issue.id;
+    longitude = issue.longitude;
+    latitude = issue.latitude;
   }
   late Issue issue;
   late int id;
@@ -25,7 +28,8 @@ class IssuePage extends StatefulWidget {
   late String description;
   late String status;
   late String date;
-
+  String? longitude;
+  String? latitude;
   @override
   State<IssuePage> createState() => _IssuePageState();
 }
@@ -36,6 +40,8 @@ class _IssuePageState extends State<IssuePage> {
   late TextEditingController newTitle = TextEditingController();
   late TextEditingController newDescription = TextEditingController();
   late String newStatus;
+  String? longitude;
+  String? latitude;
 
   TextStyle txtStyle =
       const TextStyle(fontSize: 20, fontWeight: FontWeight.bold);
@@ -45,6 +51,12 @@ class _IssuePageState extends State<IssuePage> {
     newDescription.text = widget.description;
     newTitle.text = widget.title;
     newPicture = widget.picture;
+    if (widget.latitude != null) {
+      latitude = widget.latitude;
+    }
+    if (widget.longitude != null) {
+      latitude = widget.longitude;
+    }
     super.initState();
   }
 
@@ -85,7 +97,7 @@ class _IssuePageState extends State<IssuePage> {
                                 bloc.editIssue(Issue(
                                     widget.id,
                                     newTitle.text,
-                                    newPicture!,
+                                    newPicture!.path,
                                     newDescription.text,
                                     formatDate(DateTime.now(), [
                                       yyyy,
@@ -98,7 +110,9 @@ class _IssuePageState extends State<IssuePage> {
                                       ':',
                                       nn
                                     ]),
-                                    newStatus));
+                                    newStatus,
+                                    longitude,
+                                    latitude));
                                 Navigator.pop(context);
                               } else {
                                 showCupertinoDialog(
@@ -121,7 +135,7 @@ class _IssuePageState extends State<IssuePage> {
                             })
                       ]),
             body: SingleChildScrollView(
-                physics: const NeverScrollableScrollPhysics(),
+                physics: const BouncingScrollPhysics(),
                 child: Container(
                     margin: const EdgeInsets.symmetric(
                         horizontal: 20, vertical: 25),
@@ -130,6 +144,7 @@ class _IssuePageState extends State<IssuePage> {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                                 Column(
+                                    mainAxisSize: MainAxisSize.min,
                                     crossAxisAlignment:
                                         CrossAxisAlignment.start,
                                     children: [
@@ -145,6 +160,35 @@ class _IssuePageState extends State<IssuePage> {
                                       Text('Issue Date : ${widget.date}',
                                           style: txtStyle)
                                     ]),
+                                if (widget.latitude != null &&
+                                    widget.longitude != null)
+                                  Padding(
+                                    padding: const EdgeInsets.symmetric(
+                                        vertical: 10),
+                                    child: Align(
+                                      alignment: Alignment.center,
+                                      child: SizedBox(
+                                        width:
+                                            MediaQuery.of(context).size.width *
+                                                0.8,
+                                        height: 300,
+                                        child: GoogleMap(
+                                            scrollGesturesEnabled: false,
+                                            tiltGesturesEnabled: false,
+                                            rotateGesturesEnabled: false,
+                                            initialCameraPosition:
+                                                CameraPosition(
+                                                    zoom: 8,
+                                                    target: LatLng(
+                                                        double.parse(
+                                                            widget.latitude!),
+                                                        double.parse(widget
+                                                            .longitude!)))),
+                                      ),
+                                    ),
+                                  )
+                                else
+                                  Text('No location', style: txtStyle),
                                 Padding(
                                     padding: const EdgeInsets.all(15.0),
                                     child: Center(
@@ -198,6 +242,94 @@ class _IssuePageState extends State<IssuePage> {
                                         const Text('Closed')
                                       ])
                                     ])),
+                            if (longitude == null && latitude == null)
+                              TextButton.icon(
+                                  label: const Text(
+                                      'Add an a location (optional)'),
+                                  onPressed: () async {
+                                    showDialog(
+                                        context: context,
+                                        builder: (context) {
+                                          return Dialog(
+                                            shape: RoundedRectangleBorder(
+                                                borderRadius:
+                                                    BorderRadius.circular(20)),
+                                            child: Column(
+                                              mainAxisSize: MainAxisSize.min,
+                                              children: [
+                                                Align(
+                                                  alignment: Alignment.topRight,
+                                                  child: IconButton(
+                                                      onPressed: () {
+                                                        Navigator.pop(context);
+                                                      },
+                                                      icon: const Icon(
+                                                        Icons.close,
+                                                        color: Colors.red,
+                                                      )),
+                                                ),
+                                                const Text(
+                                                  'Please choose the location of the issue',
+                                                  style:
+                                                      TextStyle(fontSize: 20),
+                                                ),
+                                                Container(
+                                                  padding:
+                                                      const EdgeInsets.all(18),
+                                                  width: 300,
+                                                  height: 400,
+                                                  child: GoogleMap(
+                                                      onTap: (latlong) {
+                                                        latitude = latlong
+                                                            .latitude
+                                                            .toString();
+                                                        longitude = latlong
+                                                            .longitude
+                                                            .toString();
+                                                      },
+                                                      initialCameraPosition:
+                                                          const CameraPosition(
+                                                              target: LatLng(
+                                                                  31, 31),
+                                                              zoom: 5)),
+                                                ),
+                                              ],
+                                            ),
+                                          );
+                                        }).whenComplete(() {
+                                      setState(() {});
+                                    });
+                                  },
+                                  icon: const Icon(Icons.add))
+                            else
+                              Row(
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceAround,
+                                children: [
+                                  SizedBox(
+                                    width:
+                                        MediaQuery.of(context).size.width * 0.7,
+                                    child: Text(
+                                      'Current selected location is $longitude , $latitude',
+                                      softWrap: true,
+                                      maxLines: 2,
+                                      overflow: TextOverflow.fade,
+                                    ),
+                                  ),
+                                  IconButton(
+                                      onPressed: () {
+                                        setState(() {
+                                          longitude = null;
+                                          latitude = null;
+                                        });
+                                      },
+                                      icon: const Icon(
+                                        Icons.close,
+                                        color: Colors.red,
+                                      ))
+                                ],
+                              ),
                             if (newPicture == null)
                               TextButton.icon(
                                   label: const Text('Add an image'),

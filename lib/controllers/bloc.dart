@@ -1,7 +1,6 @@
 import 'package:bloc/bloc.dart';
 import 'package:issues_reporter/controllers/database.dart';
 import 'package:issues_reporter/models/issue_class.dart';
-import 'package:image_picker/image_picker.dart';
 
 ///A [Cubit] class to handle state management of the application and rebuild events
 ///
@@ -21,17 +20,14 @@ class BlocForIssues extends Cubit<List<Issue>> {
   ///and then rebuilds the UI as the state changes
   void updateIssuesList() async {
     List<Map> temp = await db.getData();
-    issues = temp
-        .map((val) => Issue(val['id'], val['title'], XFile(val['picture']),
-            val['description'], val['date'], val['status']))
-        .toList();
+    issues = temp.map((val) => Issue.fromMap(val)).toList();
     emit(issues);
   }
 
   ///It adds a new [Issue] to the local database and then updates the state with the new data
   void addNewIssue(Issue issue) async {
-    await db.insertIntoDataBase(issue.picture.path, issue.title,
-        issue.description, issue.date, issue.status);
+    await db.insertIntoDataBase(
+        issue.toMap());
     updateIssuesList();
   }
 
