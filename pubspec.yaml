@@ -39,6 +39,7 @@ dependencies:
   date_format: ^2.0.5
   flutter_staggered_animations: ^1.0.0
   google_maps_flutter: ^2.1.2
+  map_picker: ^0.0.3
 
 dev_dependencies:
   flutter_test:

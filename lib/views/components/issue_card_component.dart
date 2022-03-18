@@ -30,7 +30,7 @@ class IssueCard extends StatelessWidget {
                 child: Padding(
                     padding: const EdgeInsets.symmetric(
                         vertical: 15, horizontal: 20),
-                    child: Row(
+                    child: Row(mainAxisSize: MainAxisSize.min,
                         mainAxisAlignment: MainAxisAlignment.start,
                         crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
@@ -49,31 +49,39 @@ class IssueCard extends StatelessWidget {
                                   mainAxisAlignment:
                                       MainAxisAlignment.spaceBetween,
                                   children: [
-                                    Text(issue.title,
-                                        maxLines: 1,
-                                        overflow: TextOverflow.ellipsis,
-                                        softWrap: true,
-                                        style: const TextStyle(
-                                            fontSize: 25,
-                                            fontWeight: FontWeight.w600)),
-                                    Text('Created At : ${issue.date}',
-                                        maxLines: 1,
-                                        overflow: TextOverflow.ellipsis,
-                                        style: const TextStyle(
-                                          fontSize: 15,
-                                        ),
-                                        softWrap: true),
-                                    Text('Status : ${issue.status}',
-                                        style: const TextStyle(
-                                          fontSize: 15,
-                                        )),
-                                    Text('Description : ${issue.description}',
-                                        maxLines: 1,
-                                        overflow: TextOverflow.ellipsis,
-                                        style: const TextStyle(
-                                          fontSize: 15,
-                                        ),
-                                        softWrap: true),
+                                    FittedBox(fit: BoxFit.fitWidth,
+                                      child: Text(issue.title,
+                                          maxLines: 1,
+                                          overflow: TextOverflow.ellipsis,
+                                          softWrap: true,
+                                          style: const TextStyle(
+                                              fontSize: 25,
+                                              fontWeight: FontWeight.w600)),
+                                    ),
+                                    FittedBox(
+                                      child: Text('Created At : ${issue.date}',
+                                          maxLines: 1,
+                                          overflow: TextOverflow.ellipsis,
+                                          style: const TextStyle(
+                                            fontSize: 15,
+                                          ),
+                                          softWrap: true),
+                                    ),
+                                    FittedBox(
+                                      child: Text('Status : ${issue.status}',
+                                          style: const TextStyle(
+                                            fontSize: 15,
+                                          )),
+                                    ),
+                                    FittedBox(
+                                      child: Text('Description : ${issue.description}',
+                                          maxLines: 1,
+                                          overflow: TextOverflow.ellipsis,
+                                          style: const TextStyle(
+                                            fontSize: 15,
+                                          ),
+                                          softWrap: true),
+                                    ),
                                     Row(children: [
                                       IconButton(
                                           color: Colors.blue,

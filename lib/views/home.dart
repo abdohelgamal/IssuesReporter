@@ -1,7 +1,7 @@
 import 'package:issues_reporter/controllers/bloc.dart';
 import 'package:issues_reporter/models/issue_class.dart';
 import 'package:issues_reporter/views/add_issue_page.dart';
-import 'package:issues_reporter/views/issue_card_component.dart';
+import 'package:issues_reporter/views/components/issue_card_component.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';

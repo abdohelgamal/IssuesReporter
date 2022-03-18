@@ -8,6 +8,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:map_picker/map_picker.dart';
 
 ///This Page shows the information of the [Issue] and edits its info
 class IssuePage extends StatefulWidget {
@@ -30,6 +31,7 @@ class IssuePage extends StatefulWidget {
   late String date;
   String? longitude;
   String? latitude;
+
   @override
   State<IssuePage> createState() => _IssuePageState();
 }
@@ -42,6 +44,8 @@ class _IssuePageState extends State<IssuePage> {
   late String newStatus;
   String? longitude;
   String? latitude;
+  CameraPosition camPos = const CameraPosition(target: LatLng(31, 31), zoom: 5);
+  MapPickerController mapController = MapPickerController();
 
   TextStyle txtStyle =
       const TextStyle(fontSize: 20, fontWeight: FontWeight.bold);
@@ -55,9 +59,16 @@ class _IssuePageState extends State<IssuePage> {
       latitude = widget.latitude;
     }
     if (widget.longitude != null) {
-      latitude = widget.longitude;
+      longitude = widget.longitude;
     }
     super.initState();
+  }
+
+  @override
+  void dispose() {
+    newTitle.dispose();
+    newDescription.dispose();
+    super.dispose();
   }
 
   @override
@@ -251,49 +262,93 @@ class _IssuePageState extends State<IssuePage> {
                                         context: context,
                                         builder: (context) {
                                           return Dialog(
+                                            insetPadding:
+                                                const EdgeInsets.all(40),
                                             shape: RoundedRectangleBorder(
                                                 borderRadius:
                                                     BorderRadius.circular(20)),
-                                            child: Column(
-                                              mainAxisSize: MainAxisSize.min,
-                                              children: [
-                                                Align(
-                                                  alignment: Alignment.topRight,
-                                                  child: IconButton(
+                                            child: Padding(
+                                              padding: const EdgeInsets.all(10),
+                                              child: Column(
+                                                mainAxisSize: MainAxisSize.min,
+                                                children: [
+                                                  Align(
+                                                    alignment:
+                                                        Alignment.topRight,
+                                                    child: IconButton(
+                                                        onPressed: () {
+                                                          Navigator.pop(
+                                                              context);
+                                                        },
+                                                        icon: const Icon(
+                                                          Icons.close,
+                                                          size: 30,
+                                                          color: Colors.red,
+                                                        )),
+                                                  ),
+                                                  const Text(
+                                                    'Please choose the location of the issue',
+                                                    style:
+                                                        TextStyle(fontSize: 20),
+                                                  ),
+                                                  Container(
+                                                    padding:
+                                                        const EdgeInsets.all(
+                                                            18),
+                                                    width:
+                                                        MediaQuery.of(context)
+                                                                .size
+                                                                .width *
+                                                            0.8,
+                                                    height: 400,
+                                                    child: MapPicker(
+                                                        iconWidget: const Icon(
+                                                          Icons.location_pin,
+                                                          color: Colors.red,
+                                                          size: 50,
+                                                        ),
+                                                        mapPickerController:
+                                                            mapController,
+                                                        child: GoogleMap(
+                                                            onCameraMove:
+                                                                ((position) {
+                                                              camPos = position;
+                                                            }),
+                                                            onCameraIdle: () {
+                                                              mapController
+                                                                  .mapFinishedMoving!();
+                                                            },
+                                                            onCameraMoveStarted:
+                                                                () {
+                                                              mapController
+                                                                  .mapMoving!();
+                                                            },
+                                                            initialCameraPosition:
+                                                                camPos)),
+                                                  ),
+                                                  ElevatedButton(
+                                                      style: ButtonStyle(
+                                                          shape: MaterialStateProperty.all<
+                                                                  OutlinedBorder>(
+                                                              RoundedRectangleBorder(
+                                                                  borderRadius:
+                                                                      BorderRadius
+                                                                          .circular(
+                                                                              12)))),
                                                       onPressed: () {
+                                                        longitude = camPos
+                                                            .target.longitude
+                                                            .toString();
+                                                           
+                                                        latitude = camPos
+                                                            .target.latitude
+                                                            .toString();
                                                         Navigator.pop(context);
                                                       },
-                                                      icon: const Icon(
-                                                        Icons.close,
-                                                        color: Colors.red,
-                                                      )),
-                                                ),
-                                                const Text(
-                                                  'Please choose the location of the issue',
-                                                  style:
-                                                      TextStyle(fontSize: 20),
-                                                ),
-                                                Container(
-                                                  padding:
-                                                      const EdgeInsets.all(18),
-                                                  width: 300,
-                                                  height: 400,
-                                                  child: GoogleMap(
-                                                      onTap: (latlong) {
-                                                        latitude = latlong
-                                                            .latitude
-                                                            .toString();
-                                                        longitude = latlong
-                                                            .longitude
-                                                            .toString();
-                                                      },
-                                                      initialCameraPosition:
-                                                          const CameraPosition(
-                                                              target: LatLng(
-                                                                  31, 31),
-                                                              zoom: 5)),
-                                                ),
-                                              ],
+                                                      child: const Text(
+                                                          'Choose this location'))
+                                                ],
+                                              ),
                                             ),
                                           );
                                         }).whenComplete(() {
@@ -315,6 +370,7 @@ class _IssuePageState extends State<IssuePage> {
                                       softWrap: true,
                                       maxLines: 2,
                                       overflow: TextOverflow.fade,
+                                      style: const TextStyle(fontSize: 15),
                                     ),
                                   ),
                                   IconButton(
