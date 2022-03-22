@@ -1,9 +1,9 @@
 import 'dart:io';
 import 'package:issues_reporter/controllers/bloc.dart';
 import 'package:issues_reporter/models/issue_class.dart';
-import 'package:issues_reporter/views/show_issue_and_edit_it.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:issues_reporter/views/screens/show_issue_and_edit_it.dart';
 
 ///This is a component for showing only the [Issue] information and enables redirecting to another page
 ///showing more details of the [Issue] and editing it

@@ -1,7 +1,7 @@
 import 'package:issues_reporter/controllers/bloc.dart';
-import 'package:issues_reporter/views/home.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:issues_reporter/views/screens/home.dart';
 
 void main() {
   runApp(const MyApp());

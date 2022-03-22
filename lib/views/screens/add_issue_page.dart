@@ -9,7 +9,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:issues_reporter/views/components/add_image_button.dart';
 import 'package:issues_reporter/views/components/add_location_button.dart';
-import 'package:issues_reporter/views/components/custom_textfield.dart';
+import 'package:issues_reporter/views/components/custom_inputfield.dart';
 import 'package:issues_reporter/views/components/missing_data_dialog.dart';
 import 'package:issues_reporter/views/components/row_of_radios.dart';
 
@@ -88,21 +88,22 @@ class _AddIssuePageState extends State<AddIssuePage> {
         body: SafeArea(
             child: SingleChildScrollView(
                 child: Padding(
-          padding: const EdgeInsets.all(15.0),
-          child:
-              Column(crossAxisAlignment: CrossAxisAlignment.center, children: [
-            CustomInputField(title: title, maxLines: 1, hint: 'Title :'),
-            CustomInputField(
-                title: description, maxLines: 3, hint: 'Description :'),
-            RadioButtons(valueGet: status, valueSet: setStatus),
-            AddLocationButton(
-                positionSetter: setPosition,
-                positionSetterToNull: setPositionToNull),
-            AddImageButton(
-              picture: picture,
-              picSetter: setPicture,
-            )
-          ]),
-        ))));
+                    padding: const EdgeInsets.all(15.0),
+                    child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          CustomInputField(
+                              controller: title, maxLines: 1, hint: 'Title :'),
+                          CustomInputField(
+                              controller: description,
+                              maxLines: 3,
+                              hint: 'Description :'),
+                          RadioButtons(valueGet: status, valueSet: setStatus),
+                          AddLocationButton(
+                              positionSetter: setPosition,
+                              positionSetterToNull: setPositionToNull),
+                          AddImageButton(
+                              picture: picture, picSetter: setPicture)
+                        ])))));
   }
 }

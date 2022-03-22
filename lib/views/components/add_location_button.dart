@@ -128,8 +128,9 @@ class _AddLocationButtonState extends State<AddLocationButton> {
           ),
           IconButton(
               onPressed: () {
-                setState(() {   lat = null;
-                                lat = null;
+                setState(() {
+                  lat = null;
+                  lon = null;
                   widget.positionSetterToNull();
                 });
               },
