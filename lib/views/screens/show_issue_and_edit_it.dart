@@ -141,8 +141,8 @@ class _IssuePageState extends State<IssuePage> {
                                   nn
                                 ]),
                                 newStatus,
-                                longitude,
-                                latitude));
+                                latitude,
+                                longitude));
                             Navigator.pop(context);
                           } else {
                             showCupertinoDialog(
@@ -174,7 +174,9 @@ class _IssuePageState extends State<IssuePage> {
                                 valueGet: newStatus, valueSet: setNewStatus)),
                         AddLocationButton(
                             positionSetter: setPosition,
-                            positionSetterToNull: setPositionToNull,lat: latitude,lon: longitude),
+                            positionSetterToNull: setPositionToNull,
+                            lat: latitude,
+                            lon: longitude),
                         AddImageButton(
                             picture: newPicture, picSetter: setPicture)
                       ]))));

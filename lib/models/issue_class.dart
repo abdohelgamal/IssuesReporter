@@ -12,6 +12,7 @@ class Issue {
   Issue(this.id, this.title, this.picturePath, this.description, this.date,
       this.status, this.latitude, this.longitude);
 
+  ///This facory method returns an object of an [Issue] with the given data in the [Map]
   factory Issue.fromMap(Map map) {
     return Issue(
         map['id'],
@@ -20,9 +21,11 @@ class Issue {
         map['description'],
         map['date'],
         map['status'],
-        map['longitude'] == " " ? null : map['longitude'],
-        map['latitude'] == " " ? null : map['latitude']);
+        map['latitude'] == " " ? null : map['latitude'],
+        map['longitude'] == " " ? null : map['longitude']);
   }
+
+  ///This method returns the data of the [Issue] as a [Map] but with no ID property
   Map<String, Object> toMap() {
     return {
       'date': date,
@@ -35,6 +38,7 @@ class Issue {
     };
   }
 
+  ///This method returns the data of the [Issue] as a [Map]
   Map<String, Object> toMapWithID() {
     return {
       'id': id,

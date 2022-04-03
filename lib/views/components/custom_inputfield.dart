@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 
 class CustomInputField extends StatelessWidget {
-  CustomInputField({required this.controller, this.hint,required this.maxLines, Key? key})
+  CustomInputField(
+      {required this.controller, this.hint, required this.maxLines, Key? key})
       : super(key: key);
   TextEditingController controller;
   int maxLines;

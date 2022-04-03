@@ -7,27 +7,31 @@ import 'package:issues_reporter/models/issue_class.dart';
 ///It launches the database controller upon creation and then updates the UI with issues if there any
 class BlocForIssues extends Cubit<List<Issue>> {
   BlocForIssues() : super(List.empty()) {
-    db = Dbcontroller();
+    db = DbController();
     db.createDataBase().whenComplete(() {
       updateIssuesList();
     });
   }
 
-  late Dbcontroller db;
-  List<Issue> issues = [];
+  late DbController db;
+  List<Issue> allIssues = [];
+   List<Issue> openIssues = [];
+    List<Issue> closedIssues = [];
+
 
   ///It get the data stored in the local database and then maps them into a list of [Issue] model
   ///and then rebuilds the UI as the state changes
   void updateIssuesList() async {
     List<Map> temp = await db.getData();
-    issues = temp.map((val) => Issue.fromMap(val)).toList();
-    emit(issues);
+    allIssues = temp.map((val) => Issue.fromMap(val)).toList();
+    openIssues = allIssues.where((element) => element.status == 'Open',).toList();
+    closedIssues = allIssues.where((element) => element.status == 'Closed',).toList();
+    emit(allIssues);
   }
 
   ///It adds a new [Issue] to the local database and then updates the state with the new data
   void addNewIssue(Issue issue) async {
-    await db.insertIntoDataBase(
-        issue.toMap());
+    await db.insertIntoDataBase(issue.toMap());
     updateIssuesList();
   }
 

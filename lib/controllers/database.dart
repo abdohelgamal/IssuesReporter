@@ -2,7 +2,7 @@ import 'package:issues_reporter/models/issue_class.dart';
 import 'package:sqflite/sqflite.dart';
 
 ///A database controller to manage local database queries
-class Dbcontroller {
+class DbController {
   late Database database;
   String tableName = 'TestData';
 

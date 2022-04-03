@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:map_picker/map_picker.dart';
 
+///This component widget handles the part of adding location data from the Google Maps widget and rebuilding
+///its state according to the changes
 class AddLocationButton extends StatefulWidget {
   AddLocationButton(
       {required this.positionSetter,

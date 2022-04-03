@@ -2,6 +2,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 
+///This component widget handles the part of adding an [Image] and rebuilding its state according to the changes
 class AddImageButton extends StatefulWidget {
   AddImageButton({required this.picture, required this.picSetter, Key? key})
       : super(key: key);
@@ -23,7 +24,7 @@ class _AddImageButtonState extends State<AddImageButton> {
   @override
   Widget build(BuildContext context) {
     if (picture == null) {
-     return TextButton.icon(
+      return TextButton.icon(
           label: const Text('Add an image'),
           onPressed: () async {
             ImagePicker imagePicker = ImagePicker();

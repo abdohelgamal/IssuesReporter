@@ -13,94 +13,101 @@ class IssueCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var bloc = BlocProvider.of<BlocForIssues>(context);
-    return BlocConsumer<BlocForIssues, List<Issue>>(
-        listener: (context, state) {},
-        builder: (context, state) => InkWell(
-            highlightColor: Colors.lightBlue[300],
+    return Card(
+        color: const Color.fromARGB(221, 243, 226, 203),
+        margin: const EdgeInsets.all(15),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(35)),
+        elevation: 15,
+        child: InkWell(
+            borderRadius: BorderRadius.circular(35),
+            highlightColor: const Color.fromARGB(172, 103, 221, 236),
             onTap: () {
               Navigator.push(context,
                   MaterialPageRoute(builder: (context) => IssuePage(issue)));
             },
-            child: Card(
-                color: const Color.fromARGB(221, 214, 214, 214),
-                margin: const EdgeInsets.all(15),
-                shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(20)),
-                elevation: 15,
-                child: Padding(
-                    padding: const EdgeInsets.symmetric(
-                        vertical: 15, horizontal: 20),
-                    child: Row(mainAxisSize: MainAxisSize.min,
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: [
-                          ClipOval(
-                              child: Image.file(
-                                  File(
-                                    issue.picturePath,
-                                  ),
-                                  width: 150,
-                                  height: 150,
-                                  fit: BoxFit.cover)),
-                          Padding(
-                              padding: const EdgeInsets.only(left: 20),
-                              child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    FittedBox(fit: BoxFit.fitWidth,
-                                      child: Text(issue.title,
+            child: Padding(
+                padding:
+                    const EdgeInsets.symmetric(vertical: 15, horizontal: 20),
+                child: Row(
+                    mainAxisSize: MainAxisSize.min,
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      ClipOval(
+                          child: Image.file(
+                              File(
+                                issue.picturePath,
+                              ),
+                              width: 150,
+                              height: 150,
+                              fit: BoxFit.cover)),
+                      Padding(
+                          padding: const EdgeInsets.only(left: 20),
+                          child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                SizedBox(
+                                  width:
+                                      MediaQuery.of(context).size.width * 0.5,
+                                  child: Text(issue.title,
+                                      maxLines: 1,
+                                      overflow: TextOverflow.fade,
+                                      softWrap: true,
+                                      style: const TextStyle(
+                                          fontSize: 25,
+                                          fontWeight: FontWeight.w600)),
+                                ),
+                                SizedBox(
+                                  width:
+                                      MediaQuery.of(context).size.width * 0.5,
+                                  child: Text('Created At : ${issue.date}',
+                                      maxLines: 1,
+                                      overflow: TextOverflow.fade,
+                                      style: const TextStyle(
+                                        fontSize: 15,
+                                      ),
+                                      softWrap: true),
+                                ),
+                                SizedBox(
+                                  width:
+                                      MediaQuery.of(context).size.width * 0.5,
+                                  child: Text('Status : ${issue.status}',
+                                      style: const TextStyle(
+                                        fontSize: 15,
+                                      )),
+                                ),
+                                SizedBox(
+                                  width:
+                                      MediaQuery.of(context).size.width * 0.5,
+                                  child:
+                                      Text('Description : ${issue.description}',
                                           maxLines: 1,
-                                          overflow: TextOverflow.ellipsis,
-                                          softWrap: true,
-                                          style: const TextStyle(
-                                              fontSize: 25,
-                                              fontWeight: FontWeight.w600)),
-                                    ),
-                                    FittedBox(
-                                      child: Text('Created At : ${issue.date}',
-                                          maxLines: 1,
-                                          overflow: TextOverflow.ellipsis,
+                                          overflow: TextOverflow.fade,
                                           style: const TextStyle(
                                             fontSize: 15,
                                           ),
                                           softWrap: true),
-                                    ),
-                                    FittedBox(
-                                      child: Text('Status : ${issue.status}',
-                                          style: const TextStyle(
-                                            fontSize: 15,
-                                          )),
-                                    ),
-                                    FittedBox(
-                                      child: Text('Description : ${issue.description}',
-                                          maxLines: 1,
-                                          overflow: TextOverflow.ellipsis,
-                                          style: const TextStyle(
-                                            fontSize: 15,
-                                          ),
-                                          softWrap: true),
-                                    ),
-                                    Row(children: [
-                                      IconButton(
-                                          color: Colors.blue,
-                                          onPressed: () {
-                                            Navigator.push(
-                                                context,
-                                                MaterialPageRoute(
-                                                    builder: (context) =>
-                                                        IssuePage(issue)));
-                                          },
-                                          icon: const Icon(Icons.edit)),
-                                      IconButton(
-                                          color: Colors.red,
-                                          onPressed: () {
-                                            bloc.removeIssue(issue);
-                                          },
-                                          icon: const Icon(Icons.remove))
-                                    ])
-                                  ]))
-                        ])))));
+                                ),
+                                Row(children: [
+                                  IconButton(
+                                      color: Colors.blue,
+                                      onPressed: () {
+                                        Navigator.push(
+                                            context,
+                                            MaterialPageRoute(
+                                                builder: (context) =>
+                                                    IssuePage(issue)));
+                                      },
+                                      icon: const Icon(Icons.edit)),
+                                  IconButton(
+                                      color: Colors.red,
+                                      onPressed: () {
+                                        bloc.removeIssue(issue);
+                                      },
+                                      icon: const Icon(Icons.remove))
+                                ])
+                              ]))
+                    ]))));
   }
 }
