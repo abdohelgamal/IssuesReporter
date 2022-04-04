@@ -17,29 +17,31 @@ class Content extends StatelessWidget {
             listener: (context, state) {},
             builder: (context, state) {
               return TabBarView(children: [
+
+
 // All Issues Tab
 
-                ListView.builder(
-                    itemCount: bloc.allIssues.length,
-                    physics: const AlwaysScrollableScrollPhysics(
-                        parent: BouncingScrollPhysics()),
-                    itemBuilder: (context, index) {
-                      if (bloc.allIssues.isEmpty) {
-                        return const Center(
-                          child: Text('No issue has been added yet',
-                              textAlign: TextAlign.center,
-                              style: TextStyle(fontSize: 20)),
-                        );
-                      } else {
-                        return AnimationConfiguration.staggeredList(
-                            position: index,
-                            duration: const Duration(milliseconds: 600),
-                            child: SlideAnimation(
-                                horizontalOffset: 50.0,
-                                child: FadeInAnimation(
-                                    child: IssueCard(bloc.allIssues[index]))));
-                      }
-                    }),
+
+                bloc.allIssues.isEmpty
+                    ? const Center(
+                        child: Text('No issue has been added yet',
+                            textAlign: TextAlign.center,
+                            style: TextStyle(fontSize: 20)),
+                      )
+                    : ListView.builder(
+                        itemCount: bloc.allIssues.length,
+                        physics: const AlwaysScrollableScrollPhysics(
+                            parent: BouncingScrollPhysics()),
+                        itemBuilder: (context, index) {
+                          return AnimationConfiguration.staggeredList(
+                              position: index,
+                              duration: const Duration(milliseconds: 600),
+                              child: SlideAnimation(
+                                  horizontalOffset: 50.0,
+                                  child: FadeInAnimation(
+                                      child:
+                                          IssueCard(bloc.allIssues[index]))));
+                        }),
 
 // Open Issues Tab
 
