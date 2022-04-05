@@ -1,7 +1,7 @@
 # Issues Reporter
-# This repository is for a flutter application designed by Abdelrahman Elgamal.
+This repository is for a flutter application designed by Abdelrahman Elgamal.
 
-# Download from here https://play.google.com/store/apps/details?id=com.abdelrahmanelgamal.issues_reporter
+Download from here https://play.google.com/store/apps/details?id=com.abdelrahmanelgamal.issues_reporter
 
 *You can use this application to report issues from your life or work events and activities locally on the phone storage.
 You can give the issue a title , a description , a status for the issue and an image showing or describing the issue.
