@@ -1,5 +1,5 @@
-# issues_reporter
-This repository is for a flutter application designed by Abdelrahman Elgamal.
+# Issues Reporter
+*This repository is for a flutter application designed by Abdelrahman Elgamal.*
 
 Download from here https://play.google.com/store/apps/details?id=com.abdelrahmanelgamal.issues_reporter
 
